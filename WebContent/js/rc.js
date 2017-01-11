@@ -75,8 +75,8 @@ RC.register =  function(data) {
     });
 
     webPhone.userAgent.audioHelper.loadAudio({
-        incoming: '/audio/incoming.ogg', //no i18n
-        outgoing: '/audio/outgoing.ogg' //no i18n
+        incoming: '../audio/incoming.ogg', //no i18n
+        outgoing: '../audio/outgoing.ogg' //no i18n
     })
 
     webPhone.userAgent.audioHelper.setVolume(.5);

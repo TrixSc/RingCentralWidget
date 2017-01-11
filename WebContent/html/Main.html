@@ -1,17 +1,17 @@
 <html>
 <title>Remote Client</title>
 <head>
-	<script type="text/javascript" src="/lib/jquery-1.11.0.min.js"></script>	
-	<script type="text/javascript" src="/lib/handlebars.js"></script>	
-	<script type="text/javascript" src="/lib/RingCentral/ringcentral-bundle.js"></script>
-	<script type="text/javascript" src="/lib/RingCentral/ringcentral-helpers.js"></script>
-	<script type="text/javascript" src="/lib/RingCentral/sip-0.7.5.min.js"></script>
-	<script type="text/javascript" src="/lib/RingCentral/ringcentral-web-phone.js"></script>
+	<script type="text/javascript" src="../lib/jquery-1.11.0.min.js"></script>	
+	<script type="text/javascript" src="../lib/handlebars.js"></script>	
+	<script type="text/javascript" src="../lib/RingCentral/ringcentral-bundle.js"></script>
+	<script type="text/javascript" src="../lib/RingCentral/ringcentral-helpers.js"></script>
+	<script type="text/javascript" src="../lib/RingCentral/sip-0.7.5.min.js"></script>
+	<script type="text/javascript" src="../lib/RingCentral/ringcentral-web-phone.js"></script>
 
 
 	<script type="text/javascript" src="https://github.com/ZohoDevelopers/embeddedApp-js-sdk/releases/download/0.2/ZohoEmbededAppSDK.min.js"></script>
-	<script type="text/javascript" src="/js/handler.js"></script>
-	<script type="text/javascript" src="/js/rc.js"></script>
+	<script type="text/javascript" src="../js/handler.js"></script>
+	<script type="text/javascript" src="../js/rc.js"></script>
 	
 
 	<!-- SDK as per widget Configuration -->
@@ -51,7 +51,7 @@
 	</script>
 </head>
 
-<link rel="stylesheet"  type="text/css" href="/css/style.css" />
+<link rel="stylesheet"  type="text/css" href="../css/style.css" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 
 <body class="loadingDiv">
@@ -71,7 +71,7 @@
 	</div>
       <div class="p20">
 		<h4 class="mT30 logginTxt" align="center">Logging you in..</h4>
-		<h4 class="mT30" align="center"><img class="mT30" src="/img/loading.gif"></h4>		
+		<h4 class="mT30" align="center"><img class="mT30" src="../img/loading.gif"></h4>		
 	</div>
 </script>
 <script id='CallInProgress' type='text/x-handlebars-template'>
@@ -81,7 +81,7 @@
 	</div>
       <div class="callerInfo">
 		<div class="topInfocaller">
-			<img class="callInprogImg fL" src ="/img/caller.jpg"/>
+			<img class="callInprogImg fL" src ="../img/caller.jpg"/>
 				<h3 class="callerName">{{#if Name}}{{Name}}{{else}}unknown...{{/if}}
 				</h3>
 				<h3 class="callerNo">{{Number}}</h3>
@@ -135,7 +135,7 @@
 		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
 	</div>
 	<div class="callerInfo">
-        <img class="callerImg" src ="/img/caller.jpg"/>
+        <img class="callerImg" src ="../img/caller.jpg"/>
         <div>
           <h2 class="callerName">
             {{#if Name}} 
@@ -195,7 +195,7 @@
 	</div>
       <div class="callerInfo">
 		<div class="topInfocaller">
-			<img class="callInprogImg fL"" src ="/img/caller.jpg"/>
+			<img class="callInprogImg fL"" src ="../img/caller.jpg"/>
         	<div class="fL">
 				<h3 class="callerName">
             	{{#if Name}} 
@@ -236,7 +236,7 @@
 		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
 	</div>
       <div class="p20">
-		<h4 class="mT30"><img src="/img/ringcentral.png"></h4>
+		<h4 class="mT30"><img src="../img/ringcentral.png"></h4>
 		<div class="pR "><input type="textbox" id="rcLogin" name="rcLogin" placeholder="Login" class="fL inputBox"/></div>
 		<div class="pR "><input type="password"id="rcPassword" name="rcPassword" placeholder="Password" class="fL inputBox"/></div>
 		<div class="pR "><input type="textbox" id="rcExtension" name="rcExtension" placeholder="Extension" class="fL inputBox"/></div>
