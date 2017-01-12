@@ -4,9 +4,9 @@ RC ={
         extension : undefined,
     }
 RC.config={
-		Server:"https://platform.devtest.ringcentral.com",
-		AppKey:"ABF00da74970E27EF2FAD970CDADb09dE9F74C61baa3ad86b3a67B131565B67E",
-		AppSecret:"25B66C09e6f9F0991dbb597D041971deA956F05A03304CD6a3718e65cc600063",
+		Server:"https://platform.ringcentral.com",
+		AppKey:"ZTjEDb5JQkCEtSYsNz40mg",
+		AppSecret:"Vd96yrNjQoqJbPZF-UZc5QG0q4SHSbQMqjYlBzESNaPg",
 		LogLevel:"0"
 }
 RC.login =  function(server, appKey, appSecret, login, ext, password, ll) {
@@ -99,7 +99,17 @@ RC.makeCall = function(number) {
     var homeCountry = (RC.extension && RC.extension.regionalSettings && RC.extension.regionalSettings.homeCountry) ?
     		RC.extension.regionalSettings.homeCountry.id :
         null;
-
+    var interval = setInterval(function() {
+        var time = Handler.session.startTime ? (Math.round((Date.now() - Handler.session.startTime) / 1000)) : 'Ringing';
+        var result = time;
+        if('string' != typeof(time))
+        	{
+	        	var date = new Date(null);
+	        	date.setSeconds(time);
+	        	result = date.toISOString().substr(11, 8);
+        	}
+        $("#callTimer").text(result);
+    }, 1000);   
     Handler.session = webPhone.userAgent.invite(number, {
         media: {
             render: {
@@ -168,7 +178,7 @@ RC.onAccepted = function(session, CallBack)
         close();
         RC.onAccepted(newSession);
     });
-    session.on('bye', function() { close(); });
+    session.on('bye', function() { close(); });   
 }
 RC.getExtensionInfo= function(){
 	return extension;

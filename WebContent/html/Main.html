@@ -86,7 +86,7 @@
 				</h3>
 				<h3 class="callerNo">{{Number}}</h3>
 			<div class="clear"></div>
-        	<div class="timeText" id="callTimer">09:35</div>
+        	<div class="timeText" id="callTimer">00:00</div>
 		</div>
         <table align="center" class="callActions" border="0">
           <tr>
@@ -106,15 +106,15 @@
           </tr>
           <tr>
             <td class="whiteTxt pointer">
-    	          <div class="callerOpt"><i class="ringIcon messageAdd" onclick="Handler.Hold()"></i></div>
+    	          <div class="callerOpt"><i class="ringIcon messageAdd" onclick="Handler.HoldUnhold(this)" data-action="hold"></i></div>
 					<p class="callerOptTxt">Add</p>              
             </td>
             <td class="whiteTxt pointer">
-	              <div class="callerOpt"><i class="ringIcon record" onclick="Handler.HoldUnhold(this)" data-action="hold"></i></div>
+	              <div class="callerOpt"><i class="ringIcon record" onclick="Handler.StartStopRecord(this)" data-action="start"></i></div>
 					<p class="callerOptTxt">Record</p>              
             </td>
             <td class="whiteTxt pointer">
-              	<div class="callerOpt"><i class="ringIcon notes" onclick="Handler.StartStopRecord(this)" data-action="start"></i></div>
+              	<div class="callerOpt"><i class="ringIcon notes"></i></div>
 				<p class="callerOptTxt">Notes</p>              
             </td>
           </tr>
@@ -131,7 +131,7 @@
 
 <script id='IncomingCall' type='text/x-handlebars-template'>
 	<div class="incomeHead">
-		<p class="incomTxtTtl">Incoming call to +1 044 6744 7070</p>
+		<p class="incomTxtTtl">Incoming call from {{Name}}</p>
 		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
 	</div>
 	<div class="callerInfo">
@@ -146,12 +146,6 @@
           </h2>
         </div>
         <div><h3 class="phNumber">{{Number}}</h3></div>
-	<h3 class="recentTtle">Recent activities</h3>
-	<ul class="listOptions">
-		<li><i class="ringIcon follFigIco" /> <span>Follow up about deal figure</span></li>
-		<li><i class="ringIcon approveIco" /> <span>Get approval on figures</span></li>
-		<li><i class="ringIcon callingIco" /> <span>Called Jeff Moss</span></li>
-	</ul>
         <div class="responseBtn">
 	        <input class="actionTxt fL" style="width: 138px;" type="button" value="Dismiss" onclick="Handler.Hangup()"/>
             <input class="actionTxt grnBtn fR" style="width: 138px; margin:0px;" type="button" value="Answer" onclick="Handler.AnswerCall()"/>
@@ -207,7 +201,7 @@
 				<h3 class="callerNo">{{Number}}</h3>
 			</div>
 			<div class="clear"></div>
-        	<div class="timeText" id="callTimer">09:35</div>
+        	<div class="timeText" id="callTimer">00:00</div>
 		</div>  
 		<div class="pR mT30"><i class="fl ringIcon entExt" /> <input type="textbox" name="extension" placeholder="Enter Extension" class="fL extInputBox"/></div>
   		<div><textarea id="calleeFeedBack" placeholder="Enter Notes"></textarea></div>
@@ -246,5 +240,7 @@
 </div>
 </form>
 </script>
+<video id="remoteVideo" hidden="hidden"></video>
+<video id="localVideo" hidden="hidden" muted></video>
 </body>
 </html>
