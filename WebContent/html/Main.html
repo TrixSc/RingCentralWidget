@@ -32,7 +32,8 @@
 				},
 			});
 			
-			$("#widgetsDiv").on("click", ".toggle-icons", function() {
+			$("#widgetsDiv").on("click", ".toggle-icons", function() 
+			{
 				var ele = $(this);
 				if(ele.hasClass("blueTxt"))
 				{
@@ -90,16 +91,13 @@
 		</div>
         <table align="center" class="callActions" border="0" width="100%">
           <tr>
-            <td class="whiteTxt pointer">
-                <div class="callerOpt"><i class="ringIcon toggle-icons mute" onclick="Handler.MuteUnmute(this)" data-action="mute" data-text-id="muteUnmuteTxt"></i></div>
-				<p class="callerOptTxt" id="muteUnmuteTxt">Mute</p>              
-            </td>
+
             <td class="whiteTxt pointer">
 	             <div class="callerOpt"> <i class="ringIcon b-vol-up" onclick="Handler.VolUp()"></i></div>
 					<p class="callerOptTxt">Plus</p>              
             </td>
 
-
+				<td class="whiteTxt pointer"></td>
 
             <td class="whiteTxt pointer">
 	              <div class="callerOpt"><i class="ringIcon b-vol-down" onclick="Handler.VolDown()"></i></div>
@@ -109,11 +107,17 @@
           </tr>
           <tr>
             <td class="whiteTxt pointer">
-    	          <div class="callerOpt"><i class="ringIcon hold" onclick="Handler.HoldUnhold(this)" data-action="hold" data-text-id="holdUnholdTxt"></i></div>
+    	          <div class="callerOpt toggle-icons" onclick="Handler.HoldUnhold(this)" data-action="hold" data-text-id="holdUnholdTxt"><i class="ringIcon hold"></i></div>
 					<p class="callerOptTxt" id="holdUnholdTxt">Hold</p>              
             </td>
+            <td class="whiteTxt pointer" >
+                <div class="callerOpt toggle-icons"onclick="Handler.MuteUnmute(this)" data-action="mute" data-text-id="muteUnmuteTxt">
+				<i class="ringIcon mute"></i></div>
+				<p class="callerOptTxt" id="muteUnmuteTxt">Mute</p>              
+            </td>
             <td class="whiteTxt pointer">
-	              <div class="callerOpt"><i class="ringIcon record" onclick="Handler.StartStopRecord(this)" data-action="start" data-text-id="startStopTxt"></i></div>
+	              <div class="callerOpt toggle-icons"  onclick="Handler.StartStopRecord(this)" data-action="start" data-text-id="startStopTxt">
+					<i class="ringIcon record"></i></div>
 					<p class="callerOptTxt" id="startStopTxt">Record</p>              
             </td>
           </tr>

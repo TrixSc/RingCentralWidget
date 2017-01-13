@@ -127,13 +127,21 @@ Handler.MuteUnmute = function(ele)
 	ele = $(ele);
 	var action = ele.attr("data-action");
 	var textID = ele.attr("data-text-id");
+	var iTag = ele.children("i");
 	if(action === "mute"){
 		ele.attr("data-action","unmute");
-		Handler.session.mute();
+		
+		iTag.removeClass("mute");
+		iTag.addClass("unmute");
+		
 		$("#"+textID).text("Unmute")
+		Handler.session.mute();
 	}
 	else if (action === "unmute")
 	{
+		iTag.removeClass("unmute");
+		iTag.addClass("mute");
+		
 		ele.attr("data-action","mute");
 		$("#"+textID).text("Mute")
 		Handler.session.unmute();
@@ -144,18 +152,23 @@ Handler.StartStopRecord = function(ele)
 {
 	ele = $(ele);
 	var action = ele.attr("data-action");
-	var textID = ele.attr("data-text-id");
+	var iTag = ele.children("i");
 	if(action === "start"){
+		
+		iTag.removeClass("record");
+		iTag.addClass("offrecord");
+		
 		ele.attr("data-action","stop");
-		$("#"+textID).text("StopRecord")
-		Handler.session.startRecord().then(function() {
+			Handler.session.startRecord().then(function() {
 		});
 	}
 	else if (action === "stop")
 	{
+		iTag.removeClass("offrecord");
+		iTag.addClass("record");
+		
 		ele.attr("data-action","start");
-		$("#"+textID).text("StartRecord")
-		Handler.session.stopRecord().then(function() {
+			Handler.session.stopRecord().then(function() {
 		});
 	}
 	
@@ -166,8 +179,14 @@ Handler.HoldUnhold = function(ele)
 	ele = $(ele);
 	var action = ele.attr("data-action");
 	var textID = ele.attr("data-text-id");
+	
+	var iTag = ele.children("i");
 	if(action === "hold"){
 		ele.attr("data-action","unhold");
+		
+		iTag.removeClass("hold");
+		iTag.addClass("unhold");
+		
 		$("#"+textID).text("Unhold")
 	    Handler.session.hold().then(function() {
 	    });
@@ -175,6 +194,10 @@ Handler.HoldUnhold = function(ele)
 	else if (action === "unhold")
 	{
 		ele.attr("data-action","hold");
+		
+		iTag.removeClass("unhold");
+		iTag.addClass("hold");
+		
 		$("#"+textID).text("Hold")
 	    Handler.session.unhold().then(function() {
 	    });
