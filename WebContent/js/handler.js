@@ -1,6 +1,7 @@
 var Handler={
 		session:undefined,
 		Data:undefined,
+		Init:false,
 }
 Handler.entityPageLoad = function()
 {
@@ -14,14 +15,18 @@ Handler.widgetInit = function(data){
 /*
  * Show loginPage here
  */
-	if(RC.loggin)
-	{
-		Handler.showDialer();
+	if(!Handler.Init){
+		if(RC.loggin)
+		{
+			Handler.showDialer();
+		}
+		else	
+		{
+			Handler.RenderTemplate("login");
+		}	
+		Handler.Init = true;
 	}
-	else	
-	{
-		Handler.RenderTemplate("login");
-	}
+	
 }
 Handler.maximizePane = function(){
 	ZOHO.CRM.UI.telephony.maximize()
@@ -228,7 +233,6 @@ Handler.saveNotes = function()
  */
 Handler.getcallerInfo = function(session)
 {
-	debugger;
 	var callerInfo = {
 			Name:session.request.from.displayName,
 			Number:"Unknown",

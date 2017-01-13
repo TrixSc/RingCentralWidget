@@ -549,7 +549,9 @@ input.fL.extInputBox {
     width: 100%;
     border:1px solid #c4c4c4;
     font-size: 14px;
-    font-family: "proxima_novalight";    
+    font-family: "proxima_novalight"; 
+    padding: 5px;
+    padding-left: 7px;   
 }
 .subjectInputBox, .inputBox {
     padding: 10px;
@@ -582,4 +584,12 @@ input.callBluebtn {
     font-size: 26px;
     color: #000;
     font-family: "proxima_novalight";
+}
+.feedbkIco{
+    border: 1px solid #c4c4c4;
+    padding: 2px;
+    left: 29px;
+    top: 4px;
+    background-position: -108px -59px;
+    height: 26px;
 }
