@@ -74,6 +74,7 @@ Handler.DialNumber = function(number){
 	number = number+"";
 	if(number.length > 0)
 	{
+		Handler.maximizePane();
 		RC.makeCall(number);
 		if(Handler.Data)
 		{
@@ -105,7 +106,7 @@ Handler.Hangup= function() {
 
     if(Handler.Data)
     	{
-	    	Handler.RenderTemplate("FeedBack");
+	    	Handler.RenderTemplate("FeedBack",callerInfo);
     	}
     else{
     	Handler.showDialer();
@@ -125,13 +126,16 @@ Handler.MuteUnmute = function(ele)
 {
 	ele = $(ele);
 	var action = ele.attr("data-action");
+	var textID = ele.attr("data-text-id");
 	if(action === "mute"){
 		ele.attr("data-action","unmute");
 		Handler.session.mute();
+		$("#"+textID).text("Unmute")
 	}
 	else if (action === "unmute")
 	{
 		ele.attr("data-action","mute");
+		$("#"+textID).text("Mute")
 		Handler.session.unmute();
 	}
 	
@@ -140,14 +144,17 @@ Handler.StartStopRecord = function(ele)
 {
 	ele = $(ele);
 	var action = ele.attr("data-action");
+	var textID = ele.attr("data-text-id");
 	if(action === "start"){
 		ele.attr("data-action","stop");
+		$("#"+textID).text("StopRecord")
 		Handler.session.startRecord().then(function() {
 		});
 	}
 	else if (action === "stop")
 	{
 		ele.attr("data-action","start");
+		$("#"+textID).text("StartRecord")
 		Handler.session.stopRecord().then(function() {
 		});
 	}
@@ -158,14 +165,17 @@ Handler.HoldUnhold = function(ele)
 
 	ele = $(ele);
 	var action = ele.attr("data-action");
+	var textID = ele.attr("data-text-id");
 	if(action === "hold"){
 		ele.attr("data-action","unhold");
+		$("#"+textID).text("Unhold")
 	    Handler.session.hold().then(function() {
 	    });
 	}
 	else if (action === "unhold")
 	{
 		ele.attr("data-action","hold");
+		$("#"+textID).text("Hold")
 	    Handler.session.unhold().then(function() {
 	    });
 	}
@@ -175,10 +185,11 @@ Handler.saveNotes = function()
 {
 	Handler.showLoading()
 	var notes = $("#calleeFeedBack").val();
+	var title = $("#feedbacktopic").val();
 	ZOHO.CRM.API.addNotes({
 		Entity : Handler.Data.EntityType,
 		RecordID : Handler.Data.EntityID,
-		Title : "Status of Call on "+ (new Date()).toLocaleString(),
+		Title : title,
 		Content : notes
 	})
 	.then(function(data)
@@ -194,9 +205,10 @@ Handler.saveNotes = function()
  */
 Handler.getcallerInfo = function(session)
 {
+	debugger;
 	var callerInfo = {
 			Name:session.request.from.displayName,
-			Number:"unknown",
+			Number:"Unknown",
 	};
 	return callerInfo;
 }

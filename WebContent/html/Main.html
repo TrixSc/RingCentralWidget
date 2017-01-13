@@ -81,41 +81,40 @@
 	</div>
       <div class="callerInfo">
 		<div class="topInfocaller">
-			<img class="callInprogImg fL" src ="../img/caller.jpg"/>
-				<h3 class="callerName">{{#if Name}}{{Name}}{{else}}unknown...{{/if}}
+		<!--	<img class="callInprogImg fL" src ="../img/caller.jpg"/> -->
+				<h3 class="callerName">{{#if Name}}{{Name}}{{/if}}
 				</h3>
 				<h3 class="callerNo">{{Number}}</h3>
 			<div class="clear"></div>
-        	<div class="timeText" id="callTimer">00:00</div>
+        	<div class="timeText" id="callTimer">Connecting</div>
 		</div>
-        <table align="center" class="callActions" border="0">
+        <table align="center" class="callActions" border="0" width="100%">
           <tr>
             <td class="whiteTxt pointer">
-                <div class="callerOpt"><i class="ringIcon toggle-icons volumeOff" onclick="Handler.MuteUnmute(this)" data-action="mute"></i></div>
-				<p class="callerOptTxt">Park</p>              
+                <div class="callerOpt"><i class="ringIcon toggle-icons mute" onclick="Handler.MuteUnmute(this)" data-action="mute" data-text-id="muteUnmuteTxt"></i></div>
+				<p class="callerOptTxt" id="muteUnmuteTxt">Mute</p>              
             </td>
             <td class="whiteTxt pointer">
-	             <div class="callerOpt"> <i class="ringIcon flip" onclick="Handler.VolUp()"></i></div>
-					<p class="callerOptTxt">Flip</p>              
+	             <div class="callerOpt"> <i class="ringIcon volumeup" onclick="Handler.VolUp()"></i></div>
+					<p class="callerOptTxt">Plus</p>              
             </td>
+
+
+
             <td class="whiteTxt pointer">
-	              <div class="callerOpt"><i class="ringIcon transfer" onclick="Handler.VolDown()"></i></div>
-					<p class="callerOptTxt">Transfer</p>                         
+	              <div class="callerOpt"><i class="ringIcon volumedown" onclick="Handler.VolDown()"></i></div>
+					<p class="callerOptTxt">Minus</p>                         
             </td>
 
           </tr>
           <tr>
             <td class="whiteTxt pointer">
-    	          <div class="callerOpt"><i class="ringIcon messageAdd" onclick="Handler.HoldUnhold(this)" data-action="hold"></i></div>
-					<p class="callerOptTxt">Add</p>              
+    	          <div class="callerOpt"><i class="ringIcon hold" onclick="Handler.HoldUnhold(this)" data-action="hold" data-text-id="holdUnholdTxt"></i></div>
+					<p class="callerOptTxt" id="holdUnholdTxt">Hold</p>              
             </td>
             <td class="whiteTxt pointer">
-	              <div class="callerOpt"><i class="ringIcon record" onclick="Handler.StartStopRecord(this)" data-action="start"></i></div>
-					<p class="callerOptTxt">Record</p>              
-            </td>
-            <td class="whiteTxt pointer">
-              	<div class="callerOpt"><i class="ringIcon notes"></i></div>
-				<p class="callerOptTxt">Notes</p>              
+	              <div class="callerOpt"><i class="ringIcon record" onclick="Handler.StartStopRecord(this)" data-action="start" data-text-id="startStopTxt"></i></div>
+					<p class="callerOptTxt" id="startStopTxt">Record</p>              
             </td>
           </tr>
           <tr>
@@ -131,21 +130,27 @@
 
 <script id='IncomingCall' type='text/x-handlebars-template'>
 	<div class="incomeHead">
-		<p class="incomTxtTtl">Incoming call from {{Name}}</p>
+		<p class="callTxtTtl">Incoming Call</p>
 		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
 	</div>
 	<div class="callerInfo">
-        <img class="callerImg" src ="../img/caller.jpg"/>
+       <!-- <img class="callerImg" src ="../img/caller.jpg"/>-->
         <div>
-          <h2 class="callerName">
+          <h3 class="callerName" style="margin-top:30px;">
             {{#if Name}} 
                 {{Name}} 
-            {{else}}
-             unknown...
+            
             {{/if}}
-          </h2>
+          </h3>
         </div>
-        <div><h3 class="phNumber">{{Number}}</h3></div>
+        <div><h3 class="callerNo" style="margin-top:10px;">{{Number}}</h3></div>
+			<div class="timeText" id="callTimer">Connecting</div>
+			<h3 class="recentTtle">Recent activities</h3>
+	<ul class="listOptions">
+		<li><i class="ringIcon follFigIco" /> <span>Follow up about deal figure</span></li>
+		<li><i class="ringIcon approveIco" /> <span>Get approval on figures</span></li>
+		<li><i class="ringIcon callingIco" /> <span>Called Jeff Moss</span></li>
+	</ul>
         <div class="responseBtn">
 	        <input class="actionTxt fL" style="width: 138px;" type="button" value="Dismiss" onclick="Handler.Hangup()"/>
             <input class="actionTxt grnBtn fR" style="width: 138px; margin:0px;" type="button" value="Answer" onclick="Handler.AnswerCall()"/>
@@ -175,7 +180,7 @@
                       <li class="digits centerWdgt" onclick="Handler.enterNumber(this)"><label>0</label><p>+</p></li>
                       <li class="digits" onclick="Handler.enterNumber(this)"><label class="hashLabel">#</label></li>
                       <li class="fL" onclick="Handler.enterNumber(this)"><p class="btnAlign"><strong class="actionTxt"><label style="font-size: 16px;">Clear</lable></strong></p></li>
-					  <li class="fL pad-action" onclick="Handler.DialNumber()"><p class="btnAlign"><strong class="actionTxt grnBtn"><label style="font-size: 16px;">Call</lable></strong></p></li>
+					  <li class="fL pad-action" onclick="Handler.DialNumber()"><p class="btnAlign"><strong class="actionTxt grnBtn"><label style="font-size: 16px;color:#fff;">Call</lable></strong></p></li>
                       <li class="fL" onclick="Handler.enterNumber(this)"><p class="btnAlign"><strong class="actionTxt"><label style="font-size: 16px;">Delete</lable></strong></p></li>                      
                   </ol>
               </div>
@@ -184,27 +189,26 @@
 </script>
 <script id='FeedBack' type='text/x-handlebars-template'>
 	<div class="incomeHead">
-		<p class="callTxtTtl" style="">Call</p>
+		<p class="callTxtTtl" style="">FeedBack</p>
 		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
 	</div>
       <div class="callerInfo">
 		<div class="topInfocaller">
-			<img class="callInprogImg fL"" src ="../img/caller.jpg"/>
+			<!--<img class="callInprogImg fL"" src ="../img/caller.jpg"/>-->
         	<div class="fL">
 				<h3 class="callerName">
             	{{#if Name}} 
                 	{{Name}} 
-            	{{else}}
-             		unknown...
+            	
             	{{/if}}
 				</h3>
 				<h3 class="callerNo">{{Number}}</h3>
 			</div>
 			<div class="clear"></div>
-        	<div class="timeText" id="callTimer">00:00</div>
+        	<div class="timeText" id="callTimer" style="display:none;">00:00</div>
 		</div>  
-		<div class="pR mT30"><i class="fl ringIcon entExt" /> <input type="textbox" name="extension" placeholder="Enter Extension" class="fL extInputBox"/></div>
-  		<div><textarea id="calleeFeedBack" placeholder="Enter Notes"></textarea></div>
+		<div class="pR mT30"><i class="fl ringIcon entExt" /> <input type="textbox" id="feedbacktopic" name="notesttitle" placeholder="Title" class="fL extInputBox"/></div>
+  		<div><textarea id="calleeFeedBack" placeholder="Notes"></textarea></div>
   		<div><input type="button" value="submit" onclick="Handler.saveNotes('{{dataID}}')" class="callredBtn pR" /></div>
 
 </div>
@@ -231,8 +235,8 @@
 	</div>
       <div class="p20">
 		<h4 class="mT30"><img src="../img/ringcentral.png"></h4>
-		<div class="pR "><input type="textbox" id="rcLogin" name="rcLogin" placeholder="Login" class="fL inputBox"/></div>
-		<div class="pR "><input type="password"id="rcPassword" name="rcPassword" placeholder="Password" class="fL inputBox"/></div>
+		<div class="pR" style="margin-top: 10px;"><input type="textbox" id="rcLogin" name="rcLogin" placeholder="Login" class="fL inputBox" value="{{Login}}"/></div>
+		<div class="pR "><input type="password"id="rcPassword" name="rcPassword" placeholder="Password" class="fL inputBox" value="{{Pass}}"/></div>
 		<div class="pR "><input type="textbox" id="rcExtension" name="rcExtension" placeholder="Extension" class="fL inputBox"/></div>
 		<div class="clear"></div>  		
   		<div align="center" class="mT10"><input type="button" value="Login" class="callBluebtn pR w100per" onclick="Handler.initiateLogin()"/></div>

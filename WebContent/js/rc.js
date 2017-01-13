@@ -4,9 +4,9 @@ RC ={
         extension : undefined,
     }
 RC.config={
-		Server:"https://platform.ringcentral.com",
-		AppKey:"ZTjEDb5JQkCEtSYsNz40mg",
-		AppSecret:"Vd96yrNjQoqJbPZF-UZc5QG0q4SHSbQMqjYlBzESNaPg",
+		Server:"https://platform.devtest.ringcentral.com",
+		AppKey:"ABF00da74970E27EF2FAD970CDADb09dE9F74C61baa3ad86b3a67B131565B67E",
+		AppSecret:"25B66C09e6f9F0991dbb597D041971deA956F05A03304CD6a3718e65cc600063",
 		LogLevel:"0"
 }
 RC.login =  function(server, appKey, appSecret, login, ext, password, ll) {
@@ -59,7 +59,9 @@ RC.login =  function(server, appKey, appSecret, login, ext, password, ll) {
         })
         .then(this.register)
         .catch(function(e) {
-            console.log('Error in main promise chain'); //no i18n
+        	Handler.successMsg("Login Failed");
+        	Handler.RenderTemplate("login",{Login:login,Pass:password});
+        	console.log('Error in main promise chain'); //no i18n
             console.log(e.stack || e);
         });
 
@@ -100,7 +102,7 @@ RC.makeCall = function(number) {
     		RC.extension.regionalSettings.homeCountry.id :
         null;
     var interval = setInterval(function() {
-        var time = Handler.session.startTime ? (Math.round((Date.now() - Handler.session.startTime) / 1000)) : 'Ringing';
+        var time = Handler.session.startTime ? (Math.round((Date.now() - Handler.session.startTime) / 1000)) : 'Connecting';
         var result = time;
         if('string' != typeof(time))
         	{
@@ -119,6 +121,7 @@ RC.makeCall = function(number) {
         },
         fromNumber: username,
         homeCountryId: homeCountry
+        
     });
     console.dir(Handler.session);
 };
@@ -141,7 +144,7 @@ RC.onAccepted = function(session, CallBack)
     session.on('accepted', function() { 
     	CallBack();
         var interval = setInterval(function() {
-            var time = session.startTime ? (Math.round((Date.now() - session.startTime) / 1000)) : 'Ringing';
+            var time = session.startTime ? (Math.round((Date.now() - session.startTime) / 1000)) : 'Connecting';
             var result = time;
             if('string' != typeof(time))
             	{
