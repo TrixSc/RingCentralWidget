@@ -214,7 +214,10 @@
 		<div class="pR mT30"><i class="fL approveIco feedbkIco" />
 		<input type="textbox" id="feedbacktopic" name="notesttitle" placeholder="Title" class="fL extInputBox"/></div>
   		<div><textarea id="calleeFeedBack" placeholder="Notes"></textarea></div>
-  		<div><input type="button" value="submit" onclick="Handler.saveNotes('{{dataID}}')" class="callredBtn pR" /></div>
+  		<div>
+			<input type="button" value="Submit" onclick="Handler.saveNotes('{{dataID}}')" class="callGreenBtn pR" />
+			<input type="button" value="Cancel" onclick="Handler.showDialer()" class="callredBtn pR" style="margin-left: 45px;"/>
+		</div>
 
 </div>
 </div>

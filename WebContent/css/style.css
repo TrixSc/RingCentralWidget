@@ -517,6 +517,19 @@ input.callredBtn {
     left: 0;
     margin-top:15px;
 }
+
+input.callGreenBtn {
+	background-color: #19bc7d;
+    border: 1px solid rgb(22, 167, 111);
+    padding: 8px 28px;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+    margin-top:15px;
+}
+
 p.callerOptTxt {
     font-size: 14px;
     color: #000;
