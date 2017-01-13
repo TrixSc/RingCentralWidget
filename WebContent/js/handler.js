@@ -2,6 +2,7 @@ var Handler={
 		session:undefined,
 		Data:undefined,
 		Init:false,
+		callerInfo:undefined
 }
 Handler.entityPageLoad = function()
 {
@@ -91,7 +92,8 @@ Handler.DialNumber = function(number){
 			.then(function(data)
 			{
 				var name = data[0].Full_Name;
-				Handler.RenderTemplate("CallInProgress",{Name:name,Number:number});
+				Handler.callerInfo = {Name:name,Number:number};
+				Handler.RenderTemplate("CallInProgress",Handler.callerInfo);
 			});
 		}
 		else
@@ -106,7 +108,7 @@ Handler.AnswerCall = function(){
 	});
 };
 Handler.Hangup= function() {
-	var callerInfo = Handler.getcallerInfo(Handler.session);
+	var callerInfo = Handler.callerInfo;
     Handler.session.terminate();
 
     if(Handler.Data)
