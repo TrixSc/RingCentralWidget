@@ -109,7 +109,11 @@ Handler.AnswerCall = function(){
 };
 Handler.Hangup= function() {
 	var callerInfo = Handler.callerInfo;
-    Handler.session.terminate();
+    try{
+    	Handler.session.terminate();
+    }catch(e){
+    	
+    }
 
     if(Handler.Data)
     	{

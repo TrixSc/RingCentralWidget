@@ -2,6 +2,7 @@
 RC ={
         loggin	:	false,
         extension : undefined,
+        lastTimer:undefined
     }
 RC.config={
 		Server:"https://platform.ringcentral.com",
@@ -101,7 +102,11 @@ RC.makeCall = function(number) {
     var homeCountry = (RC.extension && RC.extension.regionalSettings && RC.extension.regionalSettings.homeCountry) ?
     		RC.extension.regionalSettings.homeCountry.id :
         null;
-    var interval = setInterval(function() {
+	if(RC.lastTimer){
+		window.clearInterval(RC.lastTimer);
+		RC.lastTimer = undefined;
+	}
+    RC.lastTimer = setInterval(function() {
         var time = Handler.session.startTime ? (Math.round((Date.now() - Handler.session.startTime) / 1000)) : 'Connecting';
         var result = time;
         if('string' != typeof(time))
@@ -140,10 +145,13 @@ RC.answerCall = function(session,CallBack)
 };
 RC.onAccepted = function(session, CallBack)
 {
-	debugger;
     session.on('accepted', function() { 
+    	if(RC.lastTimer){
+    		window.clearInterval(RC.lastTimer);
+    		RC.lastTimer = undefined;
+    	}
     	CallBack();
-        var interval = setInterval(function() {
+    	RC.lastTimer = setInterval(function() {
             var time = session.startTime ? (Math.round((Date.now() - session.startTime) / 1000)) : 'Connecting';
             var result = time;
             if('string' != typeof(time))
