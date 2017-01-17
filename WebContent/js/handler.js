@@ -1,7 +1,6 @@
 var Handler={
 		session:undefined,
 		Data:undefined,
-		Init:false,
 		callerInfo:undefined
 }
 Handler.entityPageLoad = function()
@@ -16,7 +15,6 @@ Handler.widgetInit = function(data){
 /*
  * Show loginPage here
  */
-	if(!Handler.Init){
 		if(RC.loggin)
 		{
 			Handler.showDialer();
@@ -26,8 +24,6 @@ Handler.widgetInit = function(data){
 			Handler.RenderTemplate("login");
 		}	
 		Handler.Init = true;
-	}
-	
 }
 Handler.maximizePane = function(){
 	ZOHO.CRM.UI.Dialer.maximize()
@@ -68,9 +64,16 @@ Handler.enterNumber = function(ele){
 	}
 };
 Handler.initiateCall = function(data){
-	console.dir(data);
-	Handler.Data = data
-	Handler.DialNumber(data.Number);
+	if(RC.loggin)
+	{
+		Handler.Data = data
+		Handler.DialNumber(data.Number);
+	}
+	else	
+	{
+		Handler.RenderTemplate("login");
+		Handler.maximizePane();
+	}	
 }
 Handler.DialNumber = function(number){
 	if(!number)
