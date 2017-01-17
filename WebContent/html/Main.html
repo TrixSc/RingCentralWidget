@@ -26,6 +26,7 @@
 			 */
 			ZOHO.embededApp.init({
 				events:{
+					DialerActive:function(){console.log("Dialer Activated")},
 					Dial:Handler.initiateCall,
 					PageLoad:Handler.entityPageLoad
 				},
