@@ -26,9 +26,9 @@
 			 */
 			ZOHO.embededApp.init({
 				events:{
-					TelephonyInit:Handler.widgetInit,
-					TelephonyCall:Handler.initiateCall,
-					EntityPageLoad:Handler.entityPageLoad
+					DialerActive:Handler.widgetInit,
+					Dial:Handler.initiateCall,
+					PageLoad:Handler.entityPageLoad
 				},
 			});
 			

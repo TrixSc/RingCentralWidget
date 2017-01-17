@@ -6,7 +6,7 @@ var Handler={
 }
 Handler.entityPageLoad = function()
 {
-	ZOHO.CRM.API.getPageInfo()
+	ZOHO.CRM.INTERACTION.getPageInfo()
     .then(function(data)
     {
         console.log(data);
@@ -30,10 +30,10 @@ Handler.widgetInit = function(data){
 	
 }
 Handler.maximizePane = function(){
-	ZOHO.CRM.UI.telephony.maximize()
+	ZOHO.CRM.UI.Dialer.maximize()
 }
 Handler.minimizePane  = function(){
-	ZOHO.CRM.UI.telephony.minimize()
+	ZOHO.CRM.UI.Dialer.minimize()
 }
 Handler.RenderTemplate=function(templateId , data){
 	var template = $("#"+templateId).html();
