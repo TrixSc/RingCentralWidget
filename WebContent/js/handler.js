@@ -1,10 +1,11 @@
 var Handler={
 		session:undefined,
 		Data:undefined,
+		callerInfo:undefined
 }
 Handler.entityPageLoad = function()
 {
-	ZOHO.CRM.API.getPageInfo()
+	ZOHO.CRM.INTERACTION.getPageInfo()
     .then(function(data)
     {
         console.log(data);
@@ -14,20 +15,21 @@ Handler.widgetInit = function(data){
 /*
  * Show loginPage here
  */
-	if(RC.loggin)
-	{
-		Handler.showDialer();
-	}
-	else	
-	{
-		Handler.RenderTemplate("login");
-	}
+		if(RC.loggin)
+		{
+			Handler.showDialer();
+		}
+		else	
+		{
+			Handler.RenderTemplate("login");
+		}	
+		Handler.Init = true;
 }
 Handler.maximizePane = function(){
-	ZOHO.CRM.UI.telephony.maximize()
+	ZOHO.CRM.UI.Dialer.maximize()
 }
 Handler.minimizePane  = function(){
-	ZOHO.CRM.UI.telephony.minimize()
+	ZOHO.CRM.UI.Dialer.minimize()
 }
 Handler.RenderTemplate=function(templateId , data){
 	var template = $("#"+templateId).html();
@@ -62,9 +64,16 @@ Handler.enterNumber = function(ele){
 	}
 };
 Handler.initiateCall = function(data){
-	console.dir(data);
-	Handler.Data = data
-	Handler.DialNumber(data.Number);
+	if(RC.loggin)
+	{
+		Handler.Data = data
+		Handler.DialNumber(data.Number);
+	}
+	else	
+	{
+		Handler.RenderTemplate("login");
+		Handler.maximizePane();
+	}	
 }
 Handler.DialNumber = function(number){
 	if(!number)
@@ -86,7 +95,8 @@ Handler.DialNumber = function(number){
 			.then(function(data)
 			{
 				var name = data[0].Full_Name;
-				Handler.RenderTemplate("CallInProgress",{Name:name,Number:number});
+				Handler.callerInfo = {Name:name,Number:number};
+				Handler.RenderTemplate("CallInProgress",Handler.callerInfo);
 			});
 		}
 		else
@@ -101,8 +111,12 @@ Handler.AnswerCall = function(){
 	});
 };
 Handler.Hangup= function() {
-	var callerInfo = Handler.getcallerInfo(Handler.session);
-    Handler.session.terminate();
+	var callerInfo = Handler.callerInfo;
+    try{
+    	Handler.session.terminate();
+    }catch(e){
+    	
+    }
 
     if(Handler.Data)
     	{
@@ -127,13 +141,21 @@ Handler.MuteUnmute = function(ele)
 	ele = $(ele);
 	var action = ele.attr("data-action");
 	var textID = ele.attr("data-text-id");
+	var iTag = ele.children("i");
 	if(action === "mute"){
 		ele.attr("data-action","unmute");
-		Handler.session.mute();
+		
+		iTag.removeClass("mute");
+		iTag.addClass("unmute");
+		
 		$("#"+textID).text("Unmute")
+		Handler.session.mute();
 	}
 	else if (action === "unmute")
 	{
+		iTag.removeClass("unmute");
+		iTag.addClass("mute");
+		
 		ele.attr("data-action","mute");
 		$("#"+textID).text("Mute")
 		Handler.session.unmute();
@@ -144,18 +166,23 @@ Handler.StartStopRecord = function(ele)
 {
 	ele = $(ele);
 	var action = ele.attr("data-action");
-	var textID = ele.attr("data-text-id");
+	var iTag = ele.children("i");
 	if(action === "start"){
+		
+		iTag.removeClass("record");
+		iTag.addClass("offrecord");
+		
 		ele.attr("data-action","stop");
-		$("#"+textID).text("StopRecord")
-		Handler.session.startRecord().then(function() {
+			Handler.session.startRecord().then(function() {
 		});
 	}
 	else if (action === "stop")
 	{
+		iTag.removeClass("offrecord");
+		iTag.addClass("record");
+		
 		ele.attr("data-action","start");
-		$("#"+textID).text("StartRecord")
-		Handler.session.stopRecord().then(function() {
+			Handler.session.stopRecord().then(function() {
 		});
 	}
 	
@@ -166,8 +193,14 @@ Handler.HoldUnhold = function(ele)
 	ele = $(ele);
 	var action = ele.attr("data-action");
 	var textID = ele.attr("data-text-id");
+	
+	var iTag = ele.children("i");
 	if(action === "hold"){
 		ele.attr("data-action","unhold");
+		
+		iTag.removeClass("hold");
+		iTag.addClass("unhold");
+		
 		$("#"+textID).text("Unhold")
 	    Handler.session.hold().then(function() {
 	    });
@@ -175,6 +208,10 @@ Handler.HoldUnhold = function(ele)
 	else if (action === "unhold")
 	{
 		ele.attr("data-action","hold");
+		
+		iTag.removeClass("unhold");
+		iTag.addClass("hold");
+		
 		$("#"+textID).text("Hold")
 	    Handler.session.unhold().then(function() {
 	    });
@@ -205,7 +242,6 @@ Handler.saveNotes = function()
  */
 Handler.getcallerInfo = function(session)
 {
-	debugger;
 	var callerInfo = {
 			Name:session.request.from.displayName,
 			Number:"Unknown",
