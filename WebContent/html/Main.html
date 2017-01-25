@@ -70,7 +70,7 @@
 		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
 	</div>
       <div class="p20">
-		<h4 class="mT30 logginTxt" align="center">Logging you in..</h4>
+		<h3 class="mT30 logginTxt" align="center">Redirecting to Ringcentral Login..</h4>
 		<h4 class="mT30" align="center"><img class="mT30" src="../img/loading.gif"></h4>		
 	</div>
 </script>
@@ -235,12 +235,11 @@
 	</div>
       <div class="p20">
 		<h4 class="mT30"><img src="../img/ringcentral.png"></h4>
-		<div class="pR" style="margin-top: 10px;"><input type="textbox" id="rcLogin" name="rcLogin" placeholder="Login" class="fL inputBox" value="{{Login}}"/></div>
-		<div class="pR "><input type="password"id="rcPassword" name="rcPassword" placeholder="Password" class="fL inputBox" value="{{Pass}}"/></div>
-		<div class="pR "><input type="textbox" id="rcExtension" name="rcExtension" placeholder="Extension" class="fL inputBox"/></div>
-		<div class="clear"></div>  		
-  		<div align="center" class="mT10"><input type="button" value="Login" class="callBluebtn pR w100per" onclick="Handler.initiateLogin()"/></div>
+		<br>
+		<a href="javascript:;" class="mT30" align="center" onclick="Handler.initiateLogin()" id="login" style="">Login to your RingCentral account.</a>
 	</div>
+</div>
+</form>
 </div>
 </form>
 </script>

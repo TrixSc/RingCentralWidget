@@ -1,75 +1,96 @@
 // $Id$
+var platform;
+var sdk;
+var sipInfo=null;
+var webPhone;
+var logLevel="0";
+var status;
 RC ={
-        loggin	:	false,
+        loggin	:	loginValidation(),
         extension : undefined,
+        lastTimer:undefined
     }
+function loginValidation()
+{
+		sdk = new RingCentral.SDK({
+	            appKey: "lJ6t5Tc4RmOXHXOBrgiycA",
+	            appSecret: "K_C3FOzBQ_abYhsJ5_pT7AHvP1IgJzRTy6X7IpLsJwiw",
+	            server: "https://platform.devtest.ringcentral.com"
+	        });
+	        
+	    platform = sdk.platform();
+	    platform.loggedIn().then(function(status) {
+	    	if(status)
+			{
+	    		subscription();
+	    		initWebRTC();
+	    		return true;
+			}
+			else
+			{
+				return false;
+			}
+	    });
+}
 RC.config={
-		Server:"https://platform.ringcentral.com",
-		AppKey:"ZTjEDb5JQkCEtSYsNz40mg",
-		AppSecret:"Vd96yrNjQoqJbPZF-UZc5QG0q4SHSbQMqjYlBzESNaPg",
+		Server:"https://platform.devtest.ringcentral.com",
+		AppKey:"lJ6t5Tc4RmOXHXOBrgiycA",
+		AppSecret:"K_C3FOzBQ_abYhsJ5_pT7AHvP1IgJzRTy6X7IpLsJwiw",
 		LogLevel:"0"
 }
-RC.login =  function(server, appKey, appSecret, login, ext, password, ll) {
+RC.login =  function(server, appKey, appSecret) {
 
-        var sdk = new RingCentral.SDK({
-            appKey: appKey,
-            appSecret: appSecret,
-            server: server
-        });
+		var brandId;
+        var authUri = platform.authUrl({
+   		 redirectUri:'https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html',
+   		 brandId : brandId
+        });	
+        var win   = window.open(authUri, 'windowname1', 'width=800, height=600');
+};
 
-        var platform = sdk.platform();
-
-        if (login) {
-            login = (login.match(/^[\+1]/)) ? login : '1' + login;
-        login = login.replace(/\W/g, '')
-    }
-
-    platform.login({
-            username: login,
-            extension: ext || null,
-            password: password
+function receiveMessage(e)
+{
+	var code;
+	var temp=e.data.toString();
+	if(temp.indexOf('code') >=0)//No I18N
+	{
+		code=temp.replace("code=","");
+		redirectUrl='https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html';
+		platform.login({
+			code:code,
+			redirectUri:redirectUrl
         })
-        .then(function() {
-            logLevel = ll;
-            username = login;
-
-            localStorage.setItem('webPhoneServer', server || ''); //no i18n
-            localStorage.setItem('webPhoneAppKey', appKey || ''); //no i18n
-            localStorage.setItem('webPhoneAppSecret', appSecret || ''); //no i18n
-            localStorage.setItem('webPhoneLogin', login || ''); //no i18n
-            localStorage.setItem('webPhoneExtension', ext || ''); //no i18n
-            localStorage.setItem('webPhonePassword', password || ''); //no i18n
-            localStorage.setItem('webPhoneLogLevel', logLevel || 0); //no i18n
-
-            return platform.get('/restapi/v1.0/account/~/extension/~');
-
-        })
-        .then(function(res) {
-
-        	RC.extension = res.json();
-            return platform.post('/client-info/sip-provision', { //no i18n
-                sipInfo: [{
-                    transport: 'WSS' //no i18n
-                }]
-            });
-
-        })
-        .then(function(res) {
-            return res.json();
-        })
-        .then(this.register)
-        .catch(function(e) {
+        .then(subscription)
+        .then(initWebRTC)
+        .catch(function(e1) {
         	Handler.successMsg("Login Failed");
         	Handler.RenderTemplate("login",{Login:login,Pass:password});
         	console.log('Error in main promise chain'); //no i18n
-            console.log(e.stack || e);
+            console.log(e1.stack || e1);
         });
+	}
+}
 
-};
-RC.register =  function(data) {
-    var sipInfo = data.sipInfo[0] || data.sipInfo;
+window.addEventListener("message", receiveMessage, false);
+
+function initWebRTC()
+{
+	return platform.post('/client-info/sip-provision', {  // No i18n
+            sipInfo: [{
+                transport: 'WSS'// No i18n
+            }]
+		
+		})
+    .then(function(res) {
+        return res.json();
+    })
+    .then(RC.register)
+}
+
+RC.register = function(data) {
+    sipInfo = data.sipInfo[0] || data.sipInfo;
     webPhone = new RingCentral.WebPhone(data, {
-        appKey: localStorage.getItem('webPhoneAppKey'), //no i18n//no i18n
+        appKey: localStorage.getItem('webPhoneAppKey'), // no i18n//no i18n
         audioHelper: {
             enabled: true
         },
@@ -77,26 +98,48 @@ RC.register =  function(data) {
     });
 
     webPhone.userAgent.audioHelper.loadAudio({
-        incoming: '../audio/incoming.ogg', //no i18n
-        outgoing: '../audio/outgoing.ogg' //no i18n
+        incoming: '../audio/incoming.ogg', // no i18n
+        outgoing: '../audio/outgoing.ogg' // no i18n
     })
 
     webPhone.userAgent.audioHelper.setVolume(.5);
 
-    webPhone.userAgent.on('invite', function(sessionArg) //no i18n
+    webPhone.userAgent.on('invite', function(sessionArg) // no i18n
         {
     		Handler.rcIncomingCall(sessionArg);
         });
-    webPhone.userAgent.on('connecting', function() {//no i18n
-        console.log('UA connecting');//no i18n
+    webPhone.userAgent.on('connecting', function() {// no i18n
+        console.log('UA connecting');// no i18n
     }); 
-    webPhone.userAgent.on('connected', function() //no i18n 
+    webPhone.userAgent.on('connected', function() // no i18n
         {
     		RC.loggin = true;
             Handler.rcLogginSuccess();
         });
     return webPhone;
 };
+function subscription() {
+
+    var subscription = sdk.createSubscription({detailed: true});
+        subscription.on(subscription.events.notification, function(msg) {
+
+        console.log('subscription message', msg.body);
+        var ActiveCalls = msg.body.activeCalls;
+        console.log('active calls', msg.body.activeCalls);
+        var callstate = msg.body.telephonyStatus;
+        console.log('subscription message', msg.body.telephonyStatus);
+        });
+        subscription.setEventFilters(['/account/~/extension/~/presence?detailedTelephonyState=true']).register().then(function(ajax) {//No I18n
+        
+    }).catch(function(e2) {
+    		platform.on(platform.events.refreshError, function(){
+    	        console.log('refreshError --->', arguments);
+        });
+        
+    });
+
+    }
+
 RC.makeCall = function(number) {
     var homeCountry = (RC.extension && RC.extension.regionalSettings && RC.extension.regionalSettings.homeCountry) ?
     		RC.extension.regionalSettings.homeCountry.id :
@@ -119,8 +162,8 @@ RC.makeCall = function(number) {
                 local: document.getElementById('localVideo')
             }
         },
-        fromNumber: username,
-        homeCountryId: homeCountry
+//        fromNumber: number,
+//        homeCountryId: homeCountry
         
     });
     console.dir(Handler.session);
