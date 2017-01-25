@@ -594,7 +594,7 @@ input.callBluebtn {
     margin-right:5px;
 }
 .logginTxt {
-    font-size: 26px;
+    font-size: 20px;
     color: #000;
     font-family: "proxima_novalight";
 }
@@ -605,4 +605,12 @@ input.callBluebtn {
     top: 4px;
     background-position: -108px -59px;
     height: 26px;
+}
+.loginTxtLink {
+	font-size: 18px;
+    text-decoration: none;
+    text-align: center;
+    color: #2c7bd0;
+    display: block;
+    cursor: pointer;
 }

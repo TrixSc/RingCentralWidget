@@ -47,6 +47,7 @@ Handler.rcIncomingCall= function(session){
 	Handler.RenderTemplate("IncomingCall",Handler.getcallerInfo(Handler.session));	
 };
 Handler.showDialer = function(){
+	Handler.maximizePane();
 	Handler.RenderTemplate("Dialer");
 };
 Handler.enterNumber = function(ele){
@@ -266,4 +267,5 @@ Handler.initiateLogin = function(event){
 	var ext = $("#rcExtension").val();
 	RC.login(RC.config.Server, RC.config.AppKey, RC.config.AppSecret, login,ext, pass,RC.config.LogLevel); //no i18n
 	Handler.RenderTemplate("LoginWait");
+	Handler.minimizePane();
 }
