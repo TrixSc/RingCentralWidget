@@ -13,9 +13,9 @@ RC ={
 function loginValidation()
 {
 		sdk = new RingCentral.SDK({
-	            appKey: "lJ6t5Tc4RmOXHXOBrgiycA",
-	            appSecret: "K_C3FOzBQ_abYhsJ5_pT7AHvP1IgJzRTy6X7IpLsJwiw",
-	            server: "https://platform.devtest.ringcentral.com"
+	            appKey: "Ypt9cnvIRUWiYcX31n1_HQ",
+	            appSecret: "SCapn7-pR4ehgG2REOagHwX_ZagE6WSkCZdR0kTPGfIg",
+	            server: "https://platform.ringcentral.com"
 	        });
 	        
 	    platform = sdk.platform();
@@ -33,13 +33,12 @@ function loginValidation()
 	    });
 }
 RC.config={
-		Server:"https://platform.devtest.ringcentral.com",
-		AppKey:"lJ6t5Tc4RmOXHXOBrgiycA",
-		AppSecret:"K_C3FOzBQ_abYhsJ5_pT7AHvP1IgJzRTy6X7IpLsJwiw",
+		Server:"https://platform.ringcentral.com",
+		AppKey:"Ypt9cnvIRUWiYcX31n1_HQ",
+		AppSecret:"SCapn7-pR4ehgG2REOagHwX_ZagE6WSkCZdR0kTPGfIg",
 		LogLevel:"0"
 }
 RC.login =  function(server, appKey, appSecret) {
-
 		var brandId;
         var authUri = platform.authUrl({
    		 redirectUri:'https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html',
