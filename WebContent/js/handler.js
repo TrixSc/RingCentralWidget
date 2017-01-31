@@ -50,6 +50,11 @@ Handler.showDialer = function(){
 	Handler.maximizePane();
 	Handler.RenderTemplate("Dialer");
 };
+Handler.logOut = function(){
+	RC.logOut();
+	Handler.RenderTemplate("login");
+	Handler.maximizePane();
+};
 Handler.enterNumber = function(ele){
 
 	var number = $(ele).find("label").text();
@@ -174,8 +179,11 @@ Handler.StartStopRecord = function(ele)
 		iTag.addClass("offrecord");
 		
 		ele.attr("data-action","stop");
-			Handler.session.startRecord().then(function() {
-		});
+			Handler.session.startRecord().then(function() {console.log('Recording started'); })
+		    .catch(function(e)
+		    		{ 
+		    	    		console.error('Recording start failed', e.stack || e);
+		    	    });
 	}
 	else if (action === "stop")
 	{
@@ -183,8 +191,11 @@ Handler.StartStopRecord = function(ele)
 		iTag.addClass("record");
 		
 		ele.attr("data-action","start");
-			Handler.session.stopRecord().then(function() {
-		});
+			Handler.session.stopRecord().then(function() {console.log('Recording stopped'); })
+		    .catch(function(e)
+		    		{ 
+		    	    		console.error('Recording stop failed', e.stack || e);
+		    	    });
 	}
 	
 }
@@ -203,7 +214,10 @@ Handler.HoldUnhold = function(ele)
 		iTag.addClass("unhold");
 		
 		$("#"+textID).text("Unhold")
-	    Handler.session.hold().then(function() {
+	    Handler.session.hold().then(function() {console.log('OnHold'); })
+	    .catch(function(e)
+		{ 
+	    		console.error('OnHold failed', e.stack || e);
 	    });
 	}
 	else if (action === "unhold")
@@ -214,7 +228,9 @@ Handler.HoldUnhold = function(ele)
 		iTag.addClass("hold");
 		
 		$("#"+textID).text("Hold")
-	    Handler.session.unhold().then(function() {
+	    Handler.session.unhold().then(function() {console.log('UnHold'); })
+	    .catch(function(e) 
+	    	{ console.error('UnHold failed', e.stack || e); 
 	    });
 	}
 }
