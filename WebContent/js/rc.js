@@ -39,12 +39,16 @@ RC.config={
 		LogLevel:"0"
 }
 RC.login =  function(server, appKey, appSecret) {
+		
 		var brandId;
         var authUri = platform.authUrl({
    		 redirectUri:'https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html',
    		 brandId : brandId
         });	
         var win   = window.open(authUri, 'windowname1', 'width=800, height=600');
+};
+RC.logOut =  function() {
+	platform.logout();
 };
 
 function receiveMessage(e)
@@ -127,6 +131,10 @@ function subscription() {
         console.log('active calls', msg.body.activeCalls);
         var callstate = msg.body.telephonyStatus;
         console.log('subscription message', msg.body.telephonyStatus);
+        if(msg.body.telephonyStatus === "NoCall")
+        {
+        	Handler.Hangup();
+        }
         });
         subscription.setEventFilters(['/account/~/extension/~/presence?detailedTelephonyState=true']).register().then(function(ajax) {//No I18n
         
