@@ -19,10 +19,10 @@ Handler.widgetInit = function(data){
 		{
 			Handler.showDialer();
 		}
-		else	
+		else
 		{
 			Handler.RenderTemplate("login");
-		}	
+		}
 		Handler.Init = true;
 }
 Handler.maximizePane = function(){
@@ -44,7 +44,7 @@ Handler.rcLogginSuccess = function(){
 Handler.rcIncomingCall= function(session){
 	Handler.session = session;
 	Handler.maximizePane();
-	Handler.RenderTemplate("IncomingCall",Handler.getcallerInfo(Handler.session));	
+	Handler.RenderTemplate("IncomingCall",Handler.getcallerInfo(Handler.session));
 };
 Handler.showDialer = function(){
 	Handler.maximizePane();
@@ -54,7 +54,14 @@ Handler.logOut = function(){
 	RC.logOut();
 	Handler.RenderTemplate("login");
 	Handler.maximizePane();
+	$('#logoutMenu').slideToggle();
 };
+Handler.showLogStatus = function(obj) {
+	$(obj).toggleClass('active');
+	var greyHght = $('.grey-bg').height();
+	$('#logoutMenu').css({'top': greyHght})
+	$('#logoutMenu').slideToggle();
+}
 Handler.enterNumber = function(ele){
 
 	var number = $(ele).find("label").text();
@@ -75,11 +82,11 @@ Handler.initiateCall = function(data){
 		Handler.Data = data
 		Handler.DialNumber(data.Number);
 	}
-	else	
+	else
 	{
 		Handler.RenderTemplate("login");
 		Handler.maximizePane();
-	}	
+	}
 }
 Handler.DialNumber = function(number){
 	if(!number)
@@ -93,7 +100,7 @@ Handler.DialNumber = function(number){
 		RC.makeCall(number);
 		if(Handler.Data)
 		{
-			
+
 			ZOHO.CRM.API.getRecord({
 				Entity : Handler.Data.EntityType,
 				RecordID : Handler.Data.EntityID
@@ -121,7 +128,7 @@ Handler.Hangup= function() {
     try{
     	Handler.session.terminate();
     }catch(e){
-    	
+
     }
 
     if(Handler.Data)
@@ -150,10 +157,10 @@ Handler.MuteUnmute = function(ele)
 	var iTag = ele.children("i");
 	if(action === "mute"){
 		ele.attr("data-action","unmute");
-		
+
 		iTag.removeClass("mute");
 		iTag.addClass("unmute");
-		
+
 		$("#"+textID).text("Unmute")
 		Handler.session.mute();
 	}
@@ -161,12 +168,12 @@ Handler.MuteUnmute = function(ele)
 	{
 		iTag.removeClass("unmute");
 		iTag.addClass("mute");
-		
+
 		ele.attr("data-action","mute");
 		$("#"+textID).text("Mute")
 		Handler.session.unmute();
 	}
-	
+
 }
 Handler.StartStopRecord = function(ele)
 {
@@ -174,14 +181,14 @@ Handler.StartStopRecord = function(ele)
 	var action = ele.attr("data-action");
 	var iTag = ele.children("i");
 	if(action === "start"){
-		
+
 		iTag.removeClass("record");
 		iTag.addClass("offrecord");
-		
+
 		ele.attr("data-action","stop");
 			Handler.session.startRecord().then(function() {console.log('Recording started'); })
 		    .catch(function(e)
-		    		{ 
+		    		{
 		    	    		console.error('Recording start failed', e.stack || e);
 		    	    });
 	}
@@ -189,15 +196,15 @@ Handler.StartStopRecord = function(ele)
 	{
 		iTag.removeClass("offrecord");
 		iTag.addClass("record");
-		
+
 		ele.attr("data-action","start");
 			Handler.session.stopRecord().then(function() {console.log('Recording stopped'); })
 		    .catch(function(e)
-		    		{ 
+		    		{
 		    	    		console.error('Recording stop failed', e.stack || e);
 		    	    });
 	}
-	
+
 }
 Handler.HoldUnhold = function(ele)
 {
@@ -205,32 +212,32 @@ Handler.HoldUnhold = function(ele)
 	ele = $(ele);
 	var action = ele.attr("data-action");
 	var textID = ele.attr("data-text-id");
-	
+
 	var iTag = ele.children("i");
 	if(action === "hold"){
 		ele.attr("data-action","unhold");
-		
+
 		iTag.removeClass("hold");
 		iTag.addClass("unhold");
-		
+
 		$("#"+textID).text("Unhold")
 	    Handler.session.hold().then(function() {console.log('OnHold'); })
 	    .catch(function(e)
-		{ 
+		{
 	    		console.error('OnHold failed', e.stack || e);
 	    });
 	}
 	else if (action === "unhold")
 	{
 		ele.attr("data-action","hold");
-		
+
 		iTag.removeClass("unhold");
 		iTag.addClass("hold");
-		
+
 		$("#"+textID).text("Hold")
 	    Handler.session.unhold().then(function() {console.log('UnHold'); })
-	    .catch(function(e) 
-	    	{ console.error('UnHold failed', e.stack || e); 
+	    .catch(function(e)
+	    	{ console.error('UnHold failed', e.stack || e);
 	    });
 	}
 }

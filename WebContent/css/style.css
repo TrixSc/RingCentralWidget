@@ -11,7 +11,7 @@
     font-style:normal;
 }
 /*~~~~~~~~~~ LIGHT ~~~~~~~~~~*/
-@font-face { 
+@font-face {
     font-family:"proxima_novalight";
     src:url("https://fonts.zohostatic.com/proximanova/proximanova_light_macroman/ProximaNova-Light-webfont.eot");
     src:url("https://fonts.zohostatic.com/proximanova/proximanova_light_macroman/ProximaNova-Light-webfont.eot?#iefix") format("embedded-opentype"),
@@ -90,6 +90,9 @@ li{
 	-ms-user-select: none;
 	user-select: none;
 }
+.dialpad{
+    background-color: white;
+}
 .dialpad .number {
     position: relative;
     z-index: 2;
@@ -141,7 +144,7 @@ li{
     color: #fff
 }
 .dialpad .dials .digits:active {
-    background: #4c9ae2;        
+    background: #4c9ae2;
 }
 .dialpad .dials .digits:active label, .dialpad .dials .digits:active p {
 	color:#fff;
@@ -207,7 +210,7 @@ li{
 	float: left;
 }
 .mL10{
-    margin-left: 10px;	
+    margin-left: 10px;
 }
 .mR10{
     margin-right: 10px;
@@ -222,7 +225,7 @@ li{
 {
 	margin-top:45px !important;
 }
-@keyframes border-animate 
+@keyframes border-animate
 {
     0%{ 		-webkit-box-shadow: 0px 0px 10px #a9cefb;	    -moz-box-shadow: 0px 0px 10px #a9cefb;		box-shadow:0px 0px 10px #a9cefb 	}
     50%{		-webkit-box-shadow: 0px 0px 50px #a9cefb;	    -moz-box-shadow: 0px 0px 50px #a9cefb;		box-shadow:0px 0px 50px #a9cefb 	}
@@ -236,8 +239,8 @@ li{
 }
 .loggingInTxt
 {
-	position: absolute; 
-	color: #fff; 
+	position: absolute;
+	color: #fff;
     width: 110px;
     margin-left: -55px;
     left: 50%;
@@ -267,13 +270,13 @@ ol.actions li{
 .endCallBtn{
 	padding: 10px;
     border-radius: 50%;
-    background: red; 
+    background: red;
 }
 .material-icons{
 	cursor: pointer;
-	-webkit-user-select: none;  
-	-moz-user-select: none;    
-	-ms-user-select: none;      
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 	user-select: none;
 }
 .loadingText{
@@ -318,7 +321,7 @@ label.starLabel, label.hashLabel {
 }
 label.hashLabel {
 	top: 7px;
-    font-size: 22px;	
+    font-size: 22px;
 }
 .dials .digits p {
     font-size: 14px;
@@ -334,22 +337,22 @@ label.hashLabel {
     color:#000;
 }
 .grnBtn {
-    margin: 0 10px;    
+    margin: 0 10px;
     background: #19bc7d;
-    padding: 8px 24px;	
+    padding: 8px 24px;
     border: solid 1px #19bc7d;
     color: #fff;
     border-bottom: 1px solid #148157;
 }
 .btnAlign {
 	padding-top: 7px;
-	padding-bottom: 10px; 
+	padding-bottom: 10px;
 	margin-top: 14px;"
 }
 a.hideWdgt {
 	font-size: 19px;
     float: right;
-    position: fixed;
+    position: absolute;
     top: 15px;
     right: 20px;
     text-align: center;
@@ -431,12 +434,12 @@ ul.listOptions {
 .b-vol-up
 {
 	background-position:0px 4px;
-	
+
 }
 .b-vol-down
 {
 	background-position:1px -22px;
-	
+
 }
 .mute
 {
@@ -457,7 +460,7 @@ ul.listOptions {
 .record
 {
 	background-position:-23px -116px;
-	
+
 }
 .offrecord
 {
@@ -480,7 +483,7 @@ h3.callerNo {
     margin-left: 15px;*/
     margin-top: 5px;
     font-size:18px;
-    
+
 }
 
 div#callTimer {
@@ -504,7 +507,7 @@ div#callTimer {
     border: 1px solid #4c9ae2;
     border-radius: 30px;
     box-sizing: border-box;
-    margin-left:5px;  
+    margin-left:5px;
 }
 input.callredBtn {
 	background-color: #f24837;
@@ -546,7 +549,7 @@ i.ringIcon.entExt {
     padding: 5px;
     width: 18px;
     height: 20px;
-    left:0px;    
+    left:0px;
 }
 input.fL.extInputBox {
     padding: 6px;
@@ -562,9 +565,9 @@ input.fL.extInputBox {
     width: 100%;
     border:1px solid #c4c4c4;
     font-size: 14px;
-    font-family: "proxima_novalight"; 
+    font-family: "proxima_novalight";
     padding: 5px;
-    padding-left: 7px;   
+    padding-left: 7px;
 }
 .subjectInputBox, .inputBox {
     padding: 10px;
@@ -613,4 +616,80 @@ input.callBluebtn {
     color: #2c7bd0;
     display: block;
     cursor: pointer;
+}
+div#logoutMenu {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    z-index: 20;
+    background: #fff;
+}
+#logoutMenu li {
+    line-height: 16px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+#logoutMenu li:last-child {
+    border-bottom: 0px;
+}
+a.loginStatus {
+    position: absolute;
+    right: 40px;
+    top: 7px;
+    background-image: url(../img/ring-icon.png);
+    background-position: -75px -118px;
+    text-indent: -9999;
+    width: 20px;
+    height: 20px;
+}
+i.logoutIcon{
+    background-image: url(../img/ring-icon.png);
+    height: 25px;
+    width: 25px;
+    background-position: -83px -149px;
+    position: absolute;
+}
+a.loginStatus.active {
+    background-position: -75px -87px;
+}
+a.logoutWdgt {
+    /* font-size: 19px; */
+    /* float: right; */
+    text-align: center;
+    text-decoration: none;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    margin-left: 25px;
+    margin-top: -20px;
+    color: #444;
+}
+button.offlineBtn {
+    background-color: grey;
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+button.onlineBtn {
+    background-color: green;
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+
+}
+.grey-bg{
+    top: 0px;
+    background-color: #f0f1f3;
+    height: 35px;
+    position: relative;
+    z-index: 99;
+}
+#logoutMenu li:last-child{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

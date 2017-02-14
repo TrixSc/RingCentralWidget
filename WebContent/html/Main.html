@@ -1,8 +1,8 @@
 <html>
 <title>Remote Client</title>
 <head>
-	<script type="text/javascript" src="../lib/jquery-1.11.0.min.js"></script>	
-	<script type="text/javascript" src="../lib/handlebars.js"></script>	
+	<script type="text/javascript" src="../lib/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="../lib/handlebars.js"></script>
 	<script type="text/javascript" src="../lib/RingCentral/ringcentral-bundle.js"></script>
 	<script type="text/javascript" src="../lib/RingCentral/ringcentral-helpers.js"></script>
 	<script type="text/javascript" src="../lib/RingCentral/sip-0.7.5.min.js"></script>
@@ -12,12 +12,12 @@
 	<script type="text/javascript" src="../lib/ZohoEmbededAppSDK.min.js"></script>
 	<script type="text/javascript" src="../js/handler.js"></script>
 	<script type="text/javascript" src="../js/rc.js"></script>
-	
+
 
 	<!-- SDK as per widget Configuration -->
 
 
-	
+
 	<script type="text/javascript">
 		$(document).ready(function()
 		{
@@ -31,24 +31,24 @@
 					PageLoad:Handler.entityPageLoad
 				},
 			});
-			
-			$("#widgetsDiv").on("click", ".toggle-icons", function() 
+
+			$("#widgetsDiv").on("click", ".toggle-icons", function()
 			{
 				var ele = $(this);
 				if(ele.hasClass("blueTxt"))
 				{
-					ele.removeClass("blueTxt")	
+					ele.removeClass("blueTxt")
 				}
 				else
 				{
 					ele.addClass("blueTxt")
 				}
 			});
-			
+
 			Handler.widgetInit();
 		});
-	
-	
+
+
 	</script>
 </head>
 
@@ -56,6 +56,13 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 
 <body class="loadingDiv">
+<div id="logoutMenu" style="display:none;">
+	<ul>
+		<li><button class="onlineBtn"> </button><span class="activeStatus">Online</span></li>
+		<li><button class="offlineBtn"> </button><span class="inactiveStatus">Offline</span></li>
+		<li><i class="logoutIcon"></i><span class="logoutStatus"></span><a class="logoutWdgt" href="javascript:;" onclick="Handler.logOut()">Logout</a></li>
+	</ul>
+</div>
 <div>
 	<div id="loadingDiv" style="display:none">
 		<div class="loadingBG">&nbsp;</div>
@@ -68,17 +75,18 @@
 <script id='LoginWait' type='text/x-handlebars-template'>
 	<div class="incomeHead">
 		<p class="callTxtTtl" style="">Log In</p>
-		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
+		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
 	</div>
       <div class="p20">
 		<h3 class="mT30 logginTxt" align="center">Redirecting to Ringcentral Login..</h4>
-		<h4 class="mT30" align="center"><img class="mT30" src="../img/loading.gif"></h4> 
+		<h4 class="mT30" align="center"><img class="mT30" src="../img/loading.gif"></h4>
 	</div>
 </script>
 <script id='CallInProgress' type='text/x-handlebars-template'>
 	<div class="incomeHead">
 		<p class="callTxtTtl" style="">Call</p>
-		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
+		<a class="loginStatus" href="javascript:;" onclick="Handler.showLogStatus()">(...)</a>
+		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
 	</div>
       <div class="callerInfo">
 		<div class="topInfocaller">
@@ -94,31 +102,31 @@
 
             <td class="whiteTxt pointer">
 	             <div class="callerOpt"> <i class="ringIcon b-vol-up" onclick="Handler.VolUp()"></i></div>
-					<p class="callerOptTxt">Plus</p>              
+					<p class="callerOptTxt">Plus</p>
             </td>
 
 				<td class="whiteTxt pointer"></td>
 
             <td class="whiteTxt pointer">
 	              <div class="callerOpt"><i class="ringIcon b-vol-down" onclick="Handler.VolDown()"></i></div>
-					<p class="callerOptTxt">Minus</p>                         
+					<p class="callerOptTxt">Minus</p>
             </td>
 
           </tr>
           <tr>
             <td class="whiteTxt pointer">
     	          <div class="callerOpt toggle-icons" onclick="Handler.HoldUnhold(this)" data-action="hold" data-text-id="holdUnholdTxt"><i class="ringIcon hold"></i></div>
-					<p class="callerOptTxt" id="holdUnholdTxt">Hold</p>              
+					<p class="callerOptTxt" id="holdUnholdTxt">Hold</p>
             </td>
             <td class="whiteTxt pointer" >
                 <div class="callerOpt toggle-icons"onclick="Handler.MuteUnmute(this)" data-action="mute" data-text-id="muteUnmuteTxt">
 				<i class="ringIcon mute"></i></div>
-				<p class="callerOptTxt" id="muteUnmuteTxt">Mute</p>              
+				<p class="callerOptTxt" id="muteUnmuteTxt">Mute</p>
             </td>
             <td class="whiteTxt pointer">
 	              <div class="callerOpt toggle-icons"  onclick="Handler.StartStopRecord(this)" data-action="start" data-text-id="startStopTxt">
 					<i class="ringIcon record"></i></div>
-					<p class="callerOptTxt" id="startStopTxt">Record</p>              
+					<p class="callerOptTxt" id="startStopTxt">Record</p>
             </td>
           </tr>
           <tr>
@@ -135,15 +143,15 @@
 <script id='IncomingCall' type='text/x-handlebars-template'>
 	<div class="incomeHead">
 		<p class="callTxtTtl">Incoming Call</p>
-		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
+		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
 	</div>
 	<div class="callerInfo">
        <!-- <img class="callerImg" src ="../img/caller.jpg"/>-->
         <div>
           <h3 class="callerName" style="margin-top:30px;">
-            {{#if Name}} 
-                {{Name}} 
-            
+            {{#if Name}}
+                {{Name}}
+
             {{/if}}
           </h3>
         </div>
@@ -164,12 +172,15 @@
 </script>
 <script id='Dialer' type='text/x-handlebars-template'>
 	<div id="wrapper">
-          <div class="dialpad compact">
-			<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
-              <div class="call-info">
+        <div class="dialpad compact">
+			<div class="grey-bg">
+				<a class="loginStatus" href="javascript:;" onclick="Handler.showLogStatus(this)">(...)</a>
+				<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
+			</div>
+            <div class="call-info">
                     <input class="number" id="dialNumber" value="{{Number}}"></input>
-              </div>
-              <div class="dials">
+            </div>
+            <div class="dials">
                   <ol>
                       <li class="digits" onclick="Handler.enterNumber(this)"><p><label>1</label></p></li>
                       <li class="digits centerWdgt" onclick="Handler.enterNumber(this)"><label>2</label><p>abc</p></li>
@@ -185,32 +196,32 @@
                       <li class="digits" onclick="Handler.enterNumber(this)"><label class="hashLabel">#</label></li>
                       <li class="fL" onclick="Handler.enterNumber(this)"><p class="btnAlign"><strong class="actionTxt"><label style="font-size: 16px;">Clear</lable></strong></p></li>
 					  <li class="fL pad-action" onclick="Handler.DialNumber()"><p class="btnAlign"><strong class="actionTxt grnBtn"><label style="font-size: 16px;color:#fff;">Call</lable></strong></p></li>
-                      <li class="fL" onclick="Handler.enterNumber(this)"><p class="btnAlign"><strong class="actionTxt"><label style="font-size: 16px;">Delete</lable></strong></p></li>                      
+                      <li class="fL" onclick="Handler.enterNumber(this)"><p class="btnAlign"><strong class="actionTxt"><label style="font-size: 16px;">Delete</lable></strong></p></li>
                   </ol>
-              </div>
-          </div>
-      </div>
+            </div>
+        </div>
+    </div>
 </script>
 <script id='FeedBack' type='text/x-handlebars-template'>
 	<div class="incomeHead">
 		<p class="callTxtTtl" style="">FeedBack</p>
-		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
+		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
 	</div>
       <div class="callerInfo">
 		<div class="topInfocaller">
 			<!--<img class="callInprogImg fL"" src ="../img/caller.jpg"/>-->
         	<div class="fL">
 				<h3 class="callerName">
-            	{{#if Name}} 
-                	{{Name}} 
-            	
+            	{{#if Name}}
+                	{{Name}}
+
             	{{/if}}
 				</h3>
 				<h3 class="callerNo">{{Number}}</h3>
 			</div>
 			<div class="clear"></div>
         	<div class="timeText" id="callTimer" style="display:none;">00:00</div>
-		</div>  
+		</div>
 		<div class="pR mT30"><i class="fL approveIco feedbkIco" />
 		<input type="textbox" id="feedbacktopic" name="notesttitle" placeholder="Title" class="fL extInputBox"/></div>
   		<div><textarea id="calleeFeedBack" placeholder="Notes"></textarea></div>
@@ -225,7 +236,7 @@
 <script id='callLog' type='text/x-handlebars-template'>
 	<div class="incomeHead">
 		<p class="callTxtTtl" style="">Log Call</p>
-		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
+		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
 	</div>
       <div class="p20">
 		<h4 class="callLogName mT10">Jeff Moss</h4>
@@ -239,7 +250,8 @@
 <form>
 	<div class="incomeHead">
 		<p class="callTxtTtl" style="">Log In</p>
-		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>		
+
+		<a class="hideWdgt" href="javascript:;" onclick="Handler.minimizePane()">-</a>
 	</div>
       <div class="p20">
 		<h4 class="mT30" style=" text-align: center; "><img src="../img/ringcentral.png"></h4>
