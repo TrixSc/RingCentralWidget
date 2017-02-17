@@ -42,8 +42,7 @@ RC.login =  function(server, appKey, appSecret) {
 
 		var brandId;
         var authUri = platform.authUrl({
-      //redirectUri:'https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html',
-        redirectUri : 'https://localhost:4443/html/Redirect.html',
+           redirectUri:'https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html',
    		brandId : brandId
         });
         var win   = window.open(authUri, 'windowname1', 'width=800, height=600');
@@ -59,8 +58,7 @@ function receiveMessage(e)
 	if(temp.indexOf('code') >=0)//No I18N
 	{
 		code=temp.replace("code=","");
-		// redirectUri='https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html';
-        redirectUri = 'https://localhost:4443/html/Redirect.html';
+		redirectUri='https://s3-us-west-2.amazonaws.com/zohocallcenter/ringcentrallive/html/Redirect.html';
 		platform.login({
 			code:code,
 			redirectUri:redirectUri

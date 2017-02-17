@@ -291,4 +291,5 @@ Handler.initiateLogin = function(event){
 	RC.login(RC.config.Server, RC.config.AppKey, RC.config.AppSecret, login,ext, pass,RC.config.LogLevel); //no i18n
 	Handler.RenderTemplate("LoginWait");
 	Handler.minimizePane();
+
 }
