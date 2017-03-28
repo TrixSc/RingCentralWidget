@@ -91,7 +91,7 @@
         this._incoming = options.incoming;
         this._outgoing = options.outgoing;
         this._audio = {};
-    }
+    };
 
     AudioHelper.prototype.setVolume = function(volume) {
         if (volume < 0) { volume = 0; }
@@ -102,7 +102,7 @@
                 this._audio[url].volume = volume;
             }
         }
-    }
+    };
 
     AudioHelper.prototype.playIncoming = function(val) {
         return this._playSound(this._incoming, val, (this.volume || 0.5));
@@ -138,6 +138,11 @@
 
         this.endpointHeader = 'P-rc-endpoint-id: ' + id;
 
+        var rcMediaHandlerFactory = function(session, options) {
+            //TODO Override MediaHandler functions in order to disable TCP candidates
+            return new SIP.WebRTC.MediaHandler(session, options);
+        };
+
         var configuration = {
             uri: 'sip:' + this.sipInfo.username + '@' + this.sipInfo.domain,
             wsServers: this.sipInfo.outboundProxy && this.sipInfo.transport
@@ -154,7 +159,9 @@
             domain: this.sipInfo.domain,
             autostart: true,
             register: true,
-            iceGatheringTimeout: this.sipInfo.iceGatheringTimeout || 3000
+            iceCheckingTimeout: this.sipInfo.iceCheckingTimeout || this.sipInfo.iceGatheringTimeout || 500,
+            mediaHandlerFactory: rcMediaHandlerFactory,
+            rtcpMuxPolicy : "negotiate"
         };
 
         this.appKey = options.appKey;
@@ -195,7 +202,7 @@
 
     /*--------------------------------------------------------------------------------------------------------------------*/
 
-    WebPhone.version = '0.3.1';
+    WebPhone.version = '0.4.1';
     WebPhone.uuid = uuid;
     WebPhone.delay = delay;
     WebPhone.extend = extend;
@@ -210,8 +217,6 @@
 
         session.__sendRequest = session.sendRequest;
         session.__receiveRequest = session.receiveRequest;
-        session.__receiveInviteResponse = session.receiveInviteResponse;
-        session.__receiveResponse = session.receiveResponse;
         session.__accept = session.accept;
         session.__hold = session.hold;
         session.__unhold = session.unhold;
@@ -219,13 +224,12 @@
 
         session.sendRequest = sendRequest;
         session.receiveRequest = receiveRequest;
-        session.receiveInviteResponse = receiveInviteResponse;
-        session.receiveResponse = receiveResponse;
         session.accept = accept;
         session.hold = hold;
         session.unhold = unhold;
         session.dtmf = dtmf;
 
+        session.warmTransfer = warmTransfer;
         session.blindTransfer = blindTransfer;
         session.transfer = transfer;
         session.park = park;
@@ -238,6 +242,15 @@
         // session.on('connecting', onConnecting);
 
         // Audio
+        session.on('progress', function(incomingResponse) {
+            if (incomingResponse.status_code === 183 && incomingResponse.body) {
+                session.createDialog(incomingResponse, 'UAC');
+                session.mediaHandler.setDescription(incomingResponse).then(function() {
+                    session.status = 11; //C.STATUS_EARLY_MEDIA;
+                    session.hasAnswer = true;
+                });
+            }
+        });
         session.on('accepted', stopPlaying);
         session.on('rejected', stopPlaying);
         session.on('bye', stopPlaying);
@@ -348,53 +361,10 @@
 
     function sendRequest(type, config) {
         if (type == SIP.C.PRACK) {
-            type = SIP.C.ACK;
+            // type = SIP.C.ACK;
+            return this;
         }
         return this.__sendRequest(type, config);
-    }
-
-    /*--------------------------------------------------------------------------------------------------------------------*/
-
-    /**
-     * Fired each time a provisional (100-199) response is received.
-     * Early media is supported by SIP.js library
-     * But in case it is sent without 100rel support we play it manually
-     * STATUS_EARLY_MEDIA === 11, it will be set by SIP.js if 100rel is supported
-     *
-     * @see https://bugzilla.mozilla.org/show_bug.cgi?id=1072388
-     * @param {SIP.Session} session
-     * @param response
-     * @param {funciton} cb
-     */
-    function patch100rel(session, response, cb) {
-
-        //Early media is supported by SIP.js library
-        //But in case it is sent without 100rel support we play it manually
-        //STATUS_EARLY_MEDIA === 11, it will be set by SIP.js if 100rel is supported
-        if (session.status !== SIP.Session.C.STATUS_EARLY_MEDIA && response.status_code === 183 && typeof(response.body) === 'string' && response.body.indexOf('\n') !== -1) {
-            if (!response.hasHeader('require')) response.setHeader('require', '100rel');
-        }
-
-        return cb.call(session, response);
-
-    }
-
-    /**
-     * @this {SIP.Session}
-     * @param response
-     * @return {*}
-     */
-    function receiveInviteResponse(response) {
-        return patch100rel(this, response, this.__receiveInviteResponse);
-    }
-
-    /**
-     * @this {SIP.Session}
-     * @param response
-     * @return {*}
-     */
-    function receiveResponse(response) {
-        return patch100rel(this, response, this.__receiveResponse);
     }
 
     /*--------------------------------------------------------------------------------------------------------------------*/
@@ -702,6 +672,38 @@
             });
 
         });
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------------*/
+
+    /**
+     * @this {SIP.Session} session
+     * @param {SIP.Session} target
+     * @param {object} transferOptions
+     * @return {Promise}
+     */
+    function warmTransfer(target, transferOptions) {
+
+        var session = this;
+
+        return (session.isOnHold() ? Promise.resolve(null) : session.hold())
+            .then(function() { return delay(300); })
+            .then(function() {
+
+                var referTo = '<' + target.dialog.remote_target.toString() +
+                              '?Replaces=' + target.dialog.id.call_id +
+                              '%3Bto-tag%3D' + target.dialog.id.remote_tag +
+                              '%3Bfrom-tag%3D' + target.dialog.id.local_tag + '>';
+
+                transferOptions = transferOptions || {};
+                transferOptions.extraHeaders = transferOptions.extraHeaders || [];
+                transferOptions.extraHeaders.push('Refer-By: ' + session.dialog.remote_target.toString());
+
+                //TODO return session.refer(newSession);
+                return session.blindTransfer(referTo, transferOptions);
+
+            });
+
     }
 
     /*--------------------------------------------------------------------------------------------------------------------*/
