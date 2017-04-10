@@ -26,10 +26,10 @@ Handler.widgetInit = function(data){
 		Handler.Init = true;
 }
 Handler.maximizePane = function(){
-	ZOHO.CRM.UI.Dialer.maximize()
+	ZOHO.CRM.UI.Dialer.maximize();
 }
 Handler.minimizePane  = function(){
-	ZOHO.CRM.UI.Dialer.minimize()
+	ZOHO.CRM.UI.Dialer.minimize();
 }
 Handler.RenderTemplate=function(templateId , data){
 	var template = $("#"+templateId).html();

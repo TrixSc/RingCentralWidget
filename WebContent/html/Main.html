@@ -9,6 +9,8 @@
 	<script type="text/javascript" src="../lib/RingCentral/ringcentral-web-phone.js"></script>
 
 
+<!-- 		<script type="text/javascript" src="https://localhost:8443/lib/EmbeddedAppInterface.js"></script>-->
+<!-- 		<script type="text/javascript" src="https://localhost:8443/lib/ZohoCrmHelper.js"></script>-->
 	<script type="text/javascript" src="../lib/ZohoEmbededAppSDK.min.js"></script>
 	<script type="text/javascript" src="../js/handler.js"></script>
 	<script type="text/javascript" src="../js/rc.js"></script>
@@ -24,13 +26,11 @@
 			/*
 			 * initialize widget with config data
 			 */
-			ZOHO.embededApp.init({
-				events:{
-					DialerActive:function(){console.log("Dialer Activated")},
-					Dial:Handler.initiateCall,
-					PageLoad:Handler.entityPageLoad
-				},
-			});
+				ZOHO.embeddedApp.on("DialerActive",function(){
+					console.log("dialer Active");
+				})
+				ZOHO.embeddedApp.on("Dial",Handler.initiateCall)
+				ZOHO.embeddedApp.on("PageLoad",Handler.entityPageLoad)
 
 			$("#widgetsDiv").on("click", ".toggle-icons", function()
 			{
@@ -44,11 +44,10 @@
 					ele.addClass("blueTxt")
 				}
 			});
-
-			Handler.widgetInit();
+			ZOHO.embeddedApp.init().then(function(){
+				Handler.widgetInit();
+			});
 		});
-
-
 	</script>
 </head>
 
