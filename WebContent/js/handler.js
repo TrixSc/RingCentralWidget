@@ -107,7 +107,7 @@ Handler.DialNumber = function(number){
 			})
 			.then(function(data)
 			{
-				var name = data[0].Full_Name;
+				var name = data.Full_Name;
 				Handler.callerInfo = {Name:name,Number:number};
 				Handler.RenderTemplate("CallInProgress",Handler.callerInfo);
 			});
